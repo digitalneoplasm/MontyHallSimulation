@@ -1,4 +1,4 @@
 # monty-hall-simulation
 
-A simulation of the Monty Hall simulation written in Clojure.
+A simulation of the Monty Hall problem written in Clojure.
 
