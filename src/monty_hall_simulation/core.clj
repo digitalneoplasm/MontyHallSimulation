@@ -1,6 +1,7 @@
 ;; Author: Daniel R. Schlegel
 ;; Simulation of the Monty Hall Problem.
 ;; Created 12/4/2015
+;; Modified 9/26/2018
 
 (ns monty-hall-simulation.core)
 
@@ -40,10 +41,8 @@
   (if change-guess?
     (println "Monty Hall Simulator - Changing Guess on Reveal -" simulation-cycles "iterations")
     (println "Monty Hall Simulator - Not Changing Guess on Reveal -" simulation-cycles "iterations"))
-  
-  (loop [n simulation-cycles
-         results []]
-    (if (> n 0)
-      (recur (dec n)
-             (conj results (monty-hall change-guess?)))
-      (float (/ (count (filter #{1} results)) (count results))))))
+
+  (float (/ (count (filter #{1} 
+                           (take simulation-cycles 
+                                 (repeatedly #(monty-hall change-guess?)))))
+            simulation-cycles)))
