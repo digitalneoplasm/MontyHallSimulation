@@ -1,7 +1,7 @@
 ;; Author: Daniel R. Schlegel
 ;; Simulation of the Monty Hall Problem.
 ;; Created 12/4/2015
-;; Modified 9/22/2019
+;; Modified 2/23/2026
 
 (ns monty-hall-simulation.core)
 
@@ -15,29 +15,25 @@
   (assoc [0 0 0] (rand-int 3) 1))
   
 (defn choose-door
-  "Generate a random integer 0, 1 or 2 which indicates the door to choose."[]
+  "Generate a random integer 0, 1 or 2 which indicates the door to choose."
+  []
   (rand-int 3))
 
 (defn reveal-goat
   "From the vector of doors and the selected index, returns the index of the
    reveled goat. If the selected-index is the car, this is, randomly, one of
-   the remaining two doors. If the selected-index is a goat, it is the other
-   index of the other goat."
+   the remaining two doors. If the selected-index is a goat, it is the index
+   of the other goat."
   [doors selected-index]
   ;; From [0 1 2] remove the door index selected already. What remains are the
   ;; indexes which have not been selected.
   (let [unselected-idxes (remove #{selected-index} (range 3))]
-	  (cond 
-	    ;; Selected a car -> randomly pick one of the other two indices to reveal.
-	    (= (nth doors selected-index) 1)
+    ;; If the car was selected...
+    (if (= 1 (nth doors selected-index))
+      ;; Randomly pick one of the other two doors to reveal.
       (nth unselected-idxes (rand-int 2))
-	    ;; Selected a goat -> reveal the other goat.
-      ;; Case 1: The other goat is behind the first unselected door
-      (= (nth doors (first unselected-idxes)) 0)
-      (first unselected-idxes)
-      ;; Case 2: The other goat is behind the second unselected door
-	    :default
-	    (second unselected-idxes))))
+      ;; Otherwise, find the index of the other goat
+      (first (filter #(= 0 (nth doors %)) unselected-idxes)))))
 
 (defn monty-hall
   "Run the monty-hall simulation one time. Returns 1 for car or 0 for goat
