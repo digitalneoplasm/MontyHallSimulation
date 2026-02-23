@@ -54,11 +54,15 @@
   "Run the simulation the number of times indicated in the simulation-cycles
    global variable. Return the percent of time the car was selected."
   [change-guess?]
-  (if change-guess?
-    (println "Monty Hall Simulator - Changing Guess on Reveal -" simulation-cycles "iterations")
-    (println "Monty Hall Simulator - Not Changing Guess on Reveal -" simulation-cycles "iterations"))
+  (let [change-str (if change-guess? "" "Not ")
+        intro-str (str "Month Hall Simulator - "
+                       change-str
+                       "Changing Guess on Reveal - "
+                       simulation-cycles
+                       " iterations")]
+    (println intro-str)
 
-  (float (/ (count (filter #{1} 
-                           (take simulation-cycles 
-                                 (repeatedly #(monty-hall change-guess?)))))
-            simulation-cycles)))
+    (float (/ (count (filter #{1}
+                            (take simulation-cycles
+                                  (repeatedly #(monty-hall change-guess?)))))
+              simulation-cycles))))
